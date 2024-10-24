@@ -38,8 +38,8 @@ opponent_arrow_speed = 5
 last_opponent_arrow_time = 0
 
 # Load sounds
-laser_sound = pygame.mixer.Sound("laser.wav")
-explosion_sound = pygame.mixer.Sound("explosion.wav")
+laser_sound = pygame.mixer.Sound(r"Assets\audio\laser.wav")
+explosion_sound = pygame.mixer.Sound(r"Assets\audio\explosion.wav")
 
 # Set up opponents
 opponent_size = 30
