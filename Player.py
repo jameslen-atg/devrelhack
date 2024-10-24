@@ -42,8 +42,8 @@ while running:
         radians = math.radians(rotation_angle)
         player_rect.x -= player_speed * math.sin(radians)
         player_rect.y -= player_speed * math.cos(radians)
-    if keys[pygame.K_DOWN]:
-        player_rect.y += player_speed
+    # if keys[pygame.K_DOWN]:
+    #     player_rect.y += player_speed
 
     # Rotate the player image
     rotated_image = pygame.transform.rotate(player_image, rotation_angle)
