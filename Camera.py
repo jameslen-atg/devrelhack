@@ -1,6 +1,7 @@
 import pygame
 import pyscroll
 import pytmx
+from MapLoader import MapLoader
 
 class Camera:
     def __init__(self, width, height, tmx_file):
@@ -10,15 +11,9 @@ class Camera:
         self.zoom_level = 0.5
         self.zoom_speed = 0.1
 
-        # Load the map
-        self.tmx_data = pytmx.util_pygame.load_pygame(tmx_file)
-
-        # Create a new data source for pyscroll
-        self.map_data = pyscroll.data.TiledMapData(self.tmx_data)
-
-        # Create a new renderer
-        self.map_layer = pyscroll.BufferedRenderer(self.map_data, (width, height))
-        self.map_layer.zoom = self.zoom_level
+        # Load the map using MapLoader
+        map_loader = MapLoader(tmx_file, width, height, self.zoom_level)
+        self.map_layer = map_loader.get_map_layer()
 
         # Create a new group for all sprites
         self.group = pyscroll.PyscrollGroup(map_layer=self.map_layer, default_layer=1)
@@ -40,21 +35,8 @@ class Camera:
         # Handle zooming with mouse scroll wheel
         for event in events:
             if event.type == pygame.MOUSEWHEEL:
-                if event.y > 0:  # Zoom in
-                    self.zoom_level += self.zoom_speed
-                elif event.y < 0:  # Zoom out
-                    self.zoom_level -= self.zoom_speed
-                self.zoom_level = max(0.1, self.zoom_level)  # Prevent zooming out too far
-                self.map_layer.zoom = self.zoom_level
-
-    def handle_zoom(self, event):
-        if event.type == pygame.MOUSEWHEEL:
-            if event.y > 0:  # Zoom in
-                self.zoom_level += self.zoom_speed
-            elif event.y < 0:  # Zoom out
-                self.zoom_level -= self.zoom_speed
-            self.zoom_level = max(0.1, self.zoom_level)  # Prevent zooming out too far
-            self.map_layer.zoom = self.zoom_level
+                # Add zoom handling logic here
+                pass
 
     def center_on(self, position):
         self.group.center(position)
