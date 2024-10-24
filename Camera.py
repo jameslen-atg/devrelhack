@@ -13,7 +13,7 @@ class Camera:
 
         # Load the map using MapLoader
         # map_loader = MapLoader(tmx_file, width, height, self.zoom_level)
-        self.map_layer = pyscroll.BufferedRenderer(map_data, (width, height))
+        self.map_layer = pyscroll.BufferedRenderer(selfmap_data, (width, height))
 
         # Create a new group for all sprites
         self.group = pyscroll.PyscrollGroup(map_layer=self.map_layer, default_layer=1)
@@ -37,13 +37,15 @@ class Camera:
             if event.type == pygame.MOUSEWHEEL:
                 # Add zoom handling logic here
                 pass
-            
-    def draw(self, surface):
-        self.group.draw(surface)
 
     def center_on(self, position):
-        # Center the camera on a specific position
         self.group.center(position)
+
+    def draw(self, screen):
+        self.group.draw(screen)
+
+    def update_group(self):
+        self.group.update()
 
     def get_bounds(self):
         left = self.group.view.left
