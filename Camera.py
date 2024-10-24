@@ -61,3 +61,10 @@ class Camera:
 
     def update_group(self):
         self.group.update()
+
+    def get_bounds(self):
+        left = self.group.view.left
+        top = self.group.view.top
+        right = self.group.view.right
+        bottom = self.group.view.bottom
+        return (left, top, right, bottom)
