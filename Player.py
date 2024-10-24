@@ -17,8 +17,9 @@ ocean_blue = (0, 105, 148)
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Simple Pygame Example')
 
-# Load player sprite
+# Load player sprite and rotate it by 180 degrees
 player_image = pygame.image.load(r'Assets\PNG\Default size\Ships\ship (1).png')
+player_image = pygame.transform.rotate(player_image, 180)
 player_rect = player_image.get_rect()
 player_rect.center = (screen_width // 2, screen_height // 2)
 player_speed = 5
@@ -32,17 +33,17 @@ while running:
             running = False
 
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT]:
+    if keys[pygame.K_LEFT] or keys[pygame.K_a]:
         rotation_angle += 5
-    if keys[pygame.K_RIGHT]:
+    if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
         rotation_angle -= 5
-    if keys[pygame.K_UP]:
+    if keys[pygame.K_UP] or keys[pygame.K_w]:
         # Calculate movement in the direction the ship is facing
         radians = math.radians(rotation_angle)
         player_rect.x -= player_speed * math.sin(radians)
         player_rect.y -= player_speed * math.cos(radians)
-    if keys[pygame.K_DOWN]:
-        player_rect.y += player_speed
+    # if keys[pygame.K_DOWN]:
+    #     player_rect.y += player_speed
 
     # Rotate the player image
     rotated_image = pygame.transform.rotate(player_image, rotation_angle)
