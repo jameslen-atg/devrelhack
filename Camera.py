@@ -13,7 +13,7 @@ class Camera:
 
         # Load the map using MapLoader
         # map_loader = MapLoader(tmx_file, width, height, self.zoom_level)
-        self.map_layer = pyscroll.BufferedRenderer(selfmap_data, (width, height))
+        self.map_layer = pyscroll.BufferedRenderer(self.map_data, (width, height))
 
         # Create a new group for all sprites
         self.group = pyscroll.PyscrollGroup(map_layer=self.map_layer, default_layer=1)
