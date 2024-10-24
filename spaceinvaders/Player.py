@@ -1,5 +1,6 @@
 import pygame
 import sys
+import math
 
 # Initialize Pygame
 pygame.init()
@@ -16,12 +17,12 @@ ocean_blue = (0, 105, 148)
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Simple Pygame Example')
 
-# Load player sprite and rotate it by 180 degrees
+# Load player sprite
 player_image = pygame.image.load(r'Assets\PNG\Default size\Ships\ship (1).png')
-player_image = pygame.transform.rotate(player_image, 180)
 player_rect = player_image.get_rect()
 player_rect.center = (screen_width // 2, screen_height // 2)
 player_speed = 5
+rotation_angle = 0
 
 # Game loop
 running = True
@@ -32,19 +33,26 @@ while running:
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:
-        player_rect.x -= player_speed
+        rotation_angle += 5
     if keys[pygame.K_RIGHT]:
-        player_rect.x += player_speed
+        rotation_angle -= 5
     if keys[pygame.K_UP]:
-        player_rect.y -= player_speed
+        # Calculate movement in the direction the ship is facing
+        radians = math.radians(rotation_angle)
+        player_rect.x -= player_speed * math.sin(radians)
+        player_rect.y -= player_speed * math.cos(radians)
     if keys[pygame.K_DOWN]:
         player_rect.y += player_speed
+
+    # Rotate the player image
+    rotated_image = pygame.transform.rotate(player_image, rotation_angle)
+    rotated_rect = rotated_image.get_rect(center=player_rect.center)
 
     # Fill the screen with ocean blue
     screen.fill(ocean_blue)
 
     # Draw the player
-    screen.blit(player_image, player_rect)
+    screen.blit(rotated_image, rotated_rect)
 
     # Update the display
     pygame.display.flip()
