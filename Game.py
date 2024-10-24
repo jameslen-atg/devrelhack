@@ -5,6 +5,7 @@ from Coin import Coin
 from Obstacle import *
 from Colors import *
 from Camera import Camera
+from MapLoader import MapLoader  # Import MapLoader
 
 # Initialize Pygame
 pygame.init()
@@ -62,6 +63,14 @@ def edges(entity):
     elif entity.position.y < 0:
         entity.position.y = HEIGHT
 
+# Load the map using MapLoader
+map_loader = MapLoader('World.tmx', WIDTH, HEIGHT)
+
+# Initialize the camera
+starting_camera_pos = pygame.Vector2(3510, 5200)
+camera = Camera(WIDTH, HEIGHT, map_loader.get_map_data())
+camera.center_on(starting_camera_pos)
+
 # Create entities with teams
 teams = ['red', 'blue', 'green']
 entities = []
@@ -91,11 +100,6 @@ font = pygame.font.Font(None, 36)
 # Track start time
 start_time = pygame.time.get_ticks()
 
-# Initialize the camera
-starting_camera_pos = pygame.Vector2(3510, 5200)
-camera = Camera(WIDTH, HEIGHT, 'World.tmx')
-camera.center_on(starting_camera_pos)
-
 while running:
     events = pygame.event.get()
     for event in events:
@@ -109,59 +113,10 @@ while running:
     camera.update(keys, events)  # AMARTZ TODO: eventually remove this and just use the camera's center_on method
 
     # Clear the screen
-    screen.fill(BLACK)
+    screen.fill((0, 0, 0))
 
-    # Draw the map and all sprites
+    # Draw the map
     camera.draw(screen)
-    camera.update_group()
-
-    # Check time limit
-    elapsed_time = pygame.time.get_ticks() - start_time
-    if elapsed_time > TIME_LIMIT:
-        game_over = True
-
-    if not game_over:
-        # if pygame.time.get_ticks() - coin_spawn_time > COIN_SPAWN_INTERVAL:
-        #     coin = spawn_coin(entities, obstacles)
-        #     coin_spawn_time = pygame.time.get_ticks()
-
-        # for obstacle in obstacles:
-        #     obstacle.draw(screen)
-
-        # for entity in entities:
-        #     entity.flock(entities, obstacles, coin)
-        #     entity.update(entities, coin)
-        #     edges(entity)
-        #     entity.draw(screen)
-
-        # if coin and not coin.collected:
-        #     coin.draw(screen)
-        # else:
-        #     coin = None
-
-        # Display scores
-        score_text = f"Red: {scores['red']}  Blue: {scores['blue']}  Green: {scores['green']}"
-        score_surface = font.render(score_text, True, WHITE)
-        screen.blit(score_surface, (10, 10))
-
-        # Display remaining time
-        remaining_time = max(0, TIME_LIMIT - elapsed_time)
-        minutes = remaining_time // 60000
-        seconds = (remaining_time % 60000) // 1000
-        time_text = f"Time: {minutes:02}:{seconds:02}"
-        time_surface = font.render(time_text, True, WHITE)
-        screen.blit(time_surface, (WIDTH - 150, 10))
-
-        # Display framerate
-        framerate = int(clock.get_fps())
-        framerate_text = f"FPS: {framerate}"
-        framerate_surface = font.render(framerate_text, True, WHITE)
-        screen.blit(framerate_surface, (WIDTH - 100, HEIGHT - 40))
-    else:
-        # Display "Game Over" message
-        game_over_text = "Game Over"
-        game_over_surface = font.render(game_over_text, True, WHITE)
-        screen.blit(game_over_surface, (WIDTH // 2 - game_over_surface.get_width() // 2, HEIGHT // 2 - game_over_surface.get_height() // 2))
 
     pygame.display.flip()
     clock.tick(60)

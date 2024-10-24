@@ -4,7 +4,7 @@ import pytmx
 from MapLoader import MapLoader
 
 class Camera:
-    def __init__(self, width, height, tmx_file):
+    def __init__(self, width, height, map_data):
         self.width = width
         self.height = height
         self.move_speed = 10
@@ -12,8 +12,8 @@ class Camera:
         self.zoom_speed = 0.1
 
         # Load the map using MapLoader
-        map_loader = MapLoader(tmx_file, width, height, self.zoom_level)
-        self.map_layer = map_loader.get_map_layer()
+        # map_loader = MapLoader(tmx_file, width, height, self.zoom_level)
+        self.map_layer = pyscroll.BufferedRenderer(map_data, (width, height))
 
         # Create a new group for all sprites
         self.group = pyscroll.PyscrollGroup(map_layer=self.map_layer, default_layer=1)
