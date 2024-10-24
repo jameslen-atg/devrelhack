@@ -24,6 +24,4 @@ class MapLoader:
                     if tile and ('CollideShip' in tile or 'CollideProjectile' in tile):
                         collidable_tile = CollidableTile(x, y, tile)
                         collidable_tiles.append(collidable_tile)
-        for tile in collidable_tiles:
-            print(f"Collidable Tile - X: {tile.get_x()}, Y: {tile.get_y()}, Properties: {tile.get_tile()}")
         return collidable_tiles
