@@ -1,9 +1,12 @@
 import pygame
+import pytmx
+import pyscroll
 import random
 from Entity import Entity
 from Coin import Coin
 from Obstacle import *
 from Colors import *
+from Camera import Camera
 
 # Initialize Pygame
 pygame.init()
@@ -20,7 +23,7 @@ NUM_OBSTACLES = 10
 scores = {'red': 0, 'blue': 0, 'green': 0}
 
 # Time limit (in milliseconds)
-TIME_LIMIT = 5 * 60 * 1000  # 5 minute
+TIME_LIMIT = 5 * 60 * 1000  # 5 minutes
 
 # Define a callback function
 def on_coin_collected(entity):
@@ -86,15 +89,36 @@ font = pygame.font.Font(None, 36)
 # Track start time
 start_time = pygame.time.get_ticks()
 
+# Initialize the camera
+starting_camera_pos = pygame.Vector2(3510, 5200)
+camera = Camera(WIDTH, HEIGHT, 'World.tmx')
+camera.center_on(starting_camera_pos)
+
 while running:
-    for event in pygame.event.get():
+    events = pygame.event.get()
+    for event in events:
         if event.type == pygame.QUIT:
             handle_game_over()
-        elif event.type == pygame.MOUSEBUTTONDOWN:
+        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # Left click
             x, y = event.pos
             coin = Coin(x, y)
 
+    keys = pygame.key.get_pressed()
+    camera.update(keys, events)  # AMARTZ TODO: eventually remove this and just use the camera's center_on method
+
+    # Center the map on the player (or any other entity)
+    # camera.center_on(camera.position)
+
+    # Clear the screen
     screen.fill(BLACK)
+
+    # Draw the map and all sprites
+    camera.draw(screen)
+    camera.update_group()
+
+    # Draw a purple circle at the starting position
+    # circle_position = camera.world_to_screen(pygame.Vector2(3510, 5200))
+    # pygame.draw.circle(screen, PURPLE, circle_position, 10)
 
     # Check time limit
     elapsed_time = pygame.time.get_ticks() - start_time
@@ -132,6 +156,12 @@ while running:
         time_text = f"Time: {minutes:02}:{seconds:02}"
         time_surface = font.render(time_text, True, WHITE)
         screen.blit(time_surface, (WIDTH - 150, 10))
+
+        # Display framerate
+        framerate = int(clock.get_fps())
+        framerate_text = f"FPS: {framerate}"
+        framerate_surface = font.render(framerate_text, True, WHITE)
+        screen.blit(framerate_surface, (WIDTH - 100, HEIGHT - 40))
     else:
         # Display "Game Over" message
         game_over_text = "Game Over"
