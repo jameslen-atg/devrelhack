@@ -37,6 +37,7 @@ class Camera:
             if event.type == pygame.MOUSEWHEEL:
                 # Add zoom handling logic here
                 pass
+            
     def draw(self, surface):
         self.group.draw(surface)
 
