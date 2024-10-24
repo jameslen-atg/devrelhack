@@ -10,3 +10,6 @@ class MapLoader:
 
     def get_map_layer(self):
         return self.map_layer
+    
+    def get_map_data(self):
+        return self.map_data
