@@ -1,12 +1,18 @@
 import pygame
 import math
 
+# Initialize Pygame mixer for sound
+pygame.mixer.init()
+
 # Load player sprite and rotate it by 180 degrees
 player_image = pygame.image.load(r'Assets\PNG\Default size\Ships\ship (1).png')
 player_image = pygame.transform.rotate(player_image, 180)
 
 # Load ball sprite
 ball_image = pygame.image.load(r'Assets\PNG\Default size\Ship parts\cannonBall.png')
+
+# Load shoot sound
+shoot_sound = pygame.mixer.Sound(r'Assets\audio\shoot.wav')
 
 class Ball:
     def __init__(self, x, y, direction):
@@ -48,18 +54,18 @@ class Player:
         #     self.rect.y += self.speed
 
         if keys[pygame.K_e]:
-            # Propel ball to the right of the ship
-            radians = math.radians(self.rotation_angle)
-            ball_x = self.rect.centerx + self.rect.width // 2 * math.cos(radians)
-            ball_y = self.rect.centery + self.rect.height // 2 * math.sin(radians)
-            self.balls.append(Ball(ball_x, ball_y, self.rotation_angle - 90))
+            # Propel ball to the right of the ship (starboard)
+            ball_direction = self.rotation_angle - 90
+            ball_position = pygame.math.Vector2(self.rect.center)
+            self.balls.append(Ball(ball_position.x, ball_position.y, ball_direction))
+            shoot_sound.play()
 
         if keys[pygame.K_q]:
-            # Propel ball to the left of the ship
-            radians = math.radians(self.rotation_angle)
-            ball_x = self.rect.centerx - self.rect.width // 2 * math.cos(radians)
-            ball_y = self.rect.centery - self.rect.height // 2 * math.sin(radians)
-            self.balls.append(Ball(ball_x, ball_y, self.rotation_angle + 90))
+            # Propel ball to the left of the ship (port)
+            ball_direction = self.rotation_angle + 90
+            ball_position = pygame.math.Vector2(self.rect.center)
+            self.balls.append(Ball(ball_position.x, ball_position.y, ball_direction))
+            shoot_sound.play()
 
     def update(self, screen_width, screen_height):
         self.handle_input()
