@@ -3,17 +3,21 @@ import pyscroll
 import pytmx
 from MapLoader import MapLoader
 
+max_zoom = 1.5
+min_zoom = 0.175
+
 class Camera:
     def __init__(self, width, height, map_data):
         self.width = width
         self.height = height
         self.move_speed = 10
-        self.zoom_level = 0.5
-        self.zoom_speed = 0.1
+        self.zoom_level = 0.30
+        self.zoom_speed = 0.10
 
         # Load the map using MapLoader
         # map_loader = MapLoader(tmx_file, width, height, self.zoom_level)
         self.map_layer = pyscroll.BufferedRenderer(map_data, (width, height))
+        self.map_layer.zoom = self.zoom_level
 
         # Create a new group for all sprites
         self.group = pyscroll.PyscrollGroup(map_layer=self.map_layer, default_layer=1)
@@ -35,8 +39,19 @@ class Camera:
         # Handle zooming with mouse scroll wheel
         for event in events:
             if event.type == pygame.MOUSEWHEEL:
-                # Add zoom handling logic here
-                pass
+                current_center = self.group.view.center
+                if event.y > 0:  # Scroll up
+                    self.zoom_level += self.zoom_speed
+                elif event.y < 0:  # Scroll down
+                    self.zoom_level -= self.zoom_speed
+                
+                # Clamp the zoom level to never be less than min_zoom
+                self.zoom_level = max(self.zoom_level, min_zoom)
+                # Clamp the zoom level to never be more than max_zoom
+                self.zoom_level = min(self.zoom_level, max_zoom)
+                
+                self.map_layer.zoom = self.zoom_level
+                self.group.center(current_center)
 
     def center_on(self, position):
         self.group.center(position)
@@ -46,3 +61,10 @@ class Camera:
 
     def update_group(self):
         self.group.update()
+
+    def get_bounds(self):
+        left = self.group.view.left
+        top = self.group.view.top
+        right = self.group.view.right
+        bottom = self.group.view.bottom
+        return (left, top, right, bottom)
