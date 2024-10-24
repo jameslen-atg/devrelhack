@@ -39,10 +39,12 @@ class Camera:
                 pass
 
     def center_on(self, position):
+        # Center the camera on a specific position
         self.group.center(position)
 
-    def draw(self, screen):
-        self.group.draw(screen)
-
-    def update_group(self):
-        self.group.update()
+    def get_bounds(self):
+        left = self.group.view.left
+        top = self.group.view.top
+        right = self.group.view.right
+        bottom = self.group.view.bottom
+        return (left, top, right, bottom)
