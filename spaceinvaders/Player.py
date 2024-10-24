@@ -16,8 +16,9 @@ ocean_blue = (0, 105, 148)
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Simple Pygame Example')
 
-# Load player sprite
+# Load player sprite and rotate it by 180 degrees
 player_image = pygame.image.load(r'Assets\PNG\Default size\Ships\ship (1).png')
+player_image = pygame.transform.rotate(player_image, 180)
 player_rect = player_image.get_rect()
 player_rect.center = (screen_width // 2, screen_height // 2)
 player_speed = 5
