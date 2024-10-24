@@ -1,6 +1,4 @@
 import pygame
-import pytmx
-import pyscroll
 import random
 from Entity import Entity
 from Coin import Coin
@@ -14,7 +12,7 @@ pygame.init()
 # Screen dimensions
 WIDTH, HEIGHT = 1280, 720
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Flocking Behavior Simulation")
+pygame.display.set_caption("Ocean of Pirates")
 
 NUM_ENTITIES = 50
 NUM_OBSTACLES = 10
@@ -106,9 +104,6 @@ while running:
     keys = pygame.key.get_pressed()
     camera.update(keys, events)  # AMARTZ TODO: eventually remove this and just use the camera's center_on method
 
-    # Center the map on the player (or any other entity)
-    # camera.center_on(camera.position)
-
     # Clear the screen
     screen.fill(BLACK)
 
@@ -116,33 +111,29 @@ while running:
     camera.draw(screen)
     camera.update_group()
 
-    # Draw a purple circle at the starting position
-    # circle_position = camera.world_to_screen(pygame.Vector2(3510, 5200))
-    # pygame.draw.circle(screen, PURPLE, circle_position, 10)
-
     # Check time limit
     elapsed_time = pygame.time.get_ticks() - start_time
     if elapsed_time > TIME_LIMIT:
         game_over = True
 
     if not game_over:
-        if pygame.time.get_ticks() - coin_spawn_time > COIN_SPAWN_INTERVAL:
-            coin = spawn_coin(entities, obstacles)
-            coin_spawn_time = pygame.time.get_ticks()
+        # if pygame.time.get_ticks() - coin_spawn_time > COIN_SPAWN_INTERVAL:
+        #     coin = spawn_coin(entities, obstacles)
+        #     coin_spawn_time = pygame.time.get_ticks()
 
-        for obstacle in obstacles:
-            obstacle.draw(screen)
+        # for obstacle in obstacles:
+        #     obstacle.draw(screen)
 
-        for entity in entities:
-            entity.flock(entities, obstacles, coin)
-            entity.update(entities, coin)
-            edges(entity)
-            entity.draw(screen)
+        # for entity in entities:
+        #     entity.flock(entities, obstacles, coin)
+        #     entity.update(entities, coin)
+        #     edges(entity)
+        #     entity.draw(screen)
 
-        if coin and not coin.collected:
-            coin.draw(screen)
-        else:
-            coin = None
+        # if coin and not coin.collected:
+        #     coin.draw(screen)
+        # else:
+        #     coin = None
 
         # Display scores
         score_text = f"Red: {scores['red']}  Blue: {scores['blue']}  Green: {scores['green']}"
