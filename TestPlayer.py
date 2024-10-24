@@ -14,7 +14,7 @@ ocean_blue = (0, 105, 148)
 
 # Set up the display
 screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption('Simple Pygame Example')
+pygame.display.set_caption('Simple Testbed for Player Class')
 
 # Create player instance
 player = Player(screen_width, screen_height)
