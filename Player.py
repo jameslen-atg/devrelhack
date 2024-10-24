@@ -33,17 +33,17 @@ while running:
             running = False
 
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT]:
+    if keys[pygame.K_LEFT] or keys[pygame.K_a]:
         rotation_angle += 5
-    if keys[pygame.K_RIGHT]:
+    if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
         rotation_angle -= 5
-    if keys[pygame.K_UP]:
+    if keys[pygame.K_UP] or keys[pygame.K_w]:
         # Calculate movement in the direction the ship is facing
         radians = math.radians(rotation_angle)
         player_rect.x -= player_speed * math.sin(radians)
         player_rect.y -= player_speed * math.cos(radians)
-    if keys[pygame.K_DOWN]:
-        player_rect.y += player_speed
+    # if keys[pygame.K_DOWN]:
+    #     player_rect.y += player_speed
 
     # Rotate the player image
     rotated_image = pygame.transform.rotate(player_image, rotation_angle)
