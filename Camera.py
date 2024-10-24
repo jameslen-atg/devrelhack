@@ -37,6 +37,8 @@ class Camera:
             if event.type == pygame.MOUSEWHEEL:
                 # Add zoom handling logic here
                 pass
+    def draw(self, surface):
+        self.group.draw(surface)
 
     def center_on(self, position):
         # Center the camera on a specific position
