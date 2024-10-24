@@ -12,6 +12,10 @@ pygame.init()
 # Screen dimensions
 WIDTH, HEIGHT = 1280, 720
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
+
+# Load and set the icon image
+icon_image = pygame.image.load('Assets\PNG\Default size\Ships\ship (1).png')
+pygame.display.set_icon(icon_image)
 pygame.display.set_caption("Ocean of Pirates")
 
 NUM_ENTITIES = 50
